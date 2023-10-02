@@ -1,4 +1,5 @@
 import 'package:crypto_app/core/config/app_config.dart';
+import 'package:crypto_app/core/websocket/websocket_connection.dart';
 import 'package:crypto_app/data/datasources/crypto_remote_datasource.dart';
 import 'package:crypto_app/data/repositories/crypto_repository_impl.dart';
 import 'package:crypto_app/domain/repositories/crypto_repository.dart';
@@ -10,10 +11,15 @@ import 'package:get_it/get_it.dart';
 GetIt getIt = GetIt.instance;
 
 Future setupInjector(AppConfig appConfig) async {
+  final WebSocketConnection webSocketConnection =
+      WebSocketConnection(wsUrl: appConfig.webSocketUrl);
+
   final CryptoRemoteDataSource cryptoRemoteDataSource =
-      CryptoRemoteDataSourceImpl(wsUrl: appConfig.webSocketUrl);
+      CryptoRemoteDataSourceImpl(webSocketConnection: webSocketConnection);
+
   final CryptoRepository cryptoRepository =
       CryptoRepositoryImpl(cryptoRemoteDataSource: cryptoRemoteDataSource);
+
   final GetPriceUseCase getPriceUseCase =
       GetPriceUseCase(cryptoRepository: cryptoRepository);
 
@@ -23,5 +29,6 @@ Future setupInjector(AppConfig appConfig) async {
   final PriceBloc priceBloc = PriceBloc(
       getPriceUseCase: getPriceUseCase,
       closeConnectionUseCase: closeConnectionUseCase);
+
   getIt.registerSingleton<PriceBloc>(priceBloc);
 }
