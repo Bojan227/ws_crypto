@@ -5,8 +5,16 @@ class WebSocketConnection {
 
   WebSocketConnection({required this.wsUrl});
 
-  WebSocketChannel createWSChannel(String url) {
-    final baseUrl = Uri.parse("$wsUrl$url");
-    return WebSocketChannel.connect(baseUrl);
+  late WebSocketChannel channel;
+
+  WebSocketChannel get currentChannel => channel;
+
+  void createWSChannel(String query) {
+    final baseUrl = Uri.parse("$wsUrl$query");
+    channel = WebSocketChannel.connect(baseUrl);
+  }
+
+  Future<void> closeChannel() async {
+    await channel.sink.close();
   }
 }

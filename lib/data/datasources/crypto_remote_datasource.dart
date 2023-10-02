@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crypto_app/core/websocket/websocket_connection.dart';
 import 'package:crypto_app/data/models/price_model.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 abstract class CryptoRemoteDataSource {
   Stream<PriceDto> getPrice({required String cryptoName});
@@ -11,17 +10,16 @@ abstract class CryptoRemoteDataSource {
 
 class CryptoRemoteDataSourceImpl implements CryptoRemoteDataSource {
   final WebSocketConnection webSocketConnection;
-  late WebSocketChannel channel;
 
   CryptoRemoteDataSourceImpl({required this.webSocketConnection});
 
   @override
   Stream<PriceDto> getPrice({required String cryptoName}) async* {
     try {
-      channel =
-          webSocketConnection.createWSChannel("/prices?assets=$cryptoName");
-
+      webSocketConnection.createWSChannel("/prices?assets=$cryptoName");
+      final channel = webSocketConnection.currentChannel;
       await for (var event in channel.stream) {
+        print(event);
         yield PriceDto(jsonDecode(event));
       }
     } catch (e) {
@@ -31,6 +29,6 @@ class CryptoRemoteDataSourceImpl implements CryptoRemoteDataSource {
 
   @override
   Future<void> closeConnection() async {
-    await channel.sink.close();
+    await webSocketConnection.closeChannel();
   }
 }
