@@ -1,0 +1,42 @@
+import 'package:bloc/bloc.dart';
+import 'package:crypto_app/domain/entities/price_entity.dart';
+import 'package:crypto_app/domain/usecases/close_connection_usecase.dart';
+import 'package:crypto_app/domain/usecases/get_price_usecase.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'price_event.dart';
+part 'price_state.dart';
+part 'price_bloc.freezed.dart';
+
+class PriceBloc extends Bloc<PriceEvent, PriceState> {
+  final GetPriceUseCase getPriceUseCase;
+  final CloseConnectionUseCase closeConnectionUseCase;
+
+  PriceBloc(
+      {required this.getPriceUseCase, required this.closeConnectionUseCase})
+      : super(const PriceState.initial()) {
+    on<GetPrice>(_onGetPrice);
+    on<CloseConnection>(_onCloseConnection);
+  }
+
+  Future<void> _onGetPrice(GetPrice event, Emitter emit) async {
+    emit(const PriceState.loading());
+
+    try {
+      await emit.forEach(getPriceUseCase.call(cryptoName: event.cryptoName),
+          onData: (Price price) => PriceState.loaded(price: price));
+    } catch (error) {
+      emit(const PriceState.error());
+    }
+  }
+
+  Future<void> _onCloseConnection(CloseConnection event, Emitter emit) async {
+    try {
+      await closeConnectionUseCase.call();
+
+      emit(const PriceState.initial());
+    } catch (error) {
+      emit(const PriceState.error());
+    }
+  }
+}
