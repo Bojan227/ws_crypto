@@ -37,6 +37,9 @@ migrate_working_dir/
 /macos
 /windows
 
+**/*.freezed.dart
+**/*.g.dart
+
 
 # Symbolication related
 app.*.symbols
