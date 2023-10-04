@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Price {
-  String get price => throw _privateConstructorUsedError;
+  double get price => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PriceCopyWith<Price> get copyWith => throw _privateConstructorUsedError;
@@ -27,7 +27,7 @@ abstract class $PriceCopyWith<$Res> {
   factory $PriceCopyWith(Price value, $Res Function(Price) then) =
       _$PriceCopyWithImpl<$Res, Price>;
   @useResult
-  $Res call({String price});
+  $Res call({double price});
 }
 
 /// @nodoc
@@ -49,7 +49,7 @@ class _$PriceCopyWithImpl<$Res, $Val extends Price>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ) as $Val);
   }
 }
@@ -61,7 +61,7 @@ abstract class _$$PriceImplCopyWith<$Res> implements $PriceCopyWith<$Res> {
       __$$PriceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String price});
+  $Res call({double price});
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class __$$PriceImplCopyWithImpl<$Res>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ));
   }
 }
@@ -92,7 +92,7 @@ class _$PriceImpl implements _Price {
   const _$PriceImpl({required this.price});
 
   @override
-  final String price;
+  final double price;
 
   @override
   String toString() {
@@ -118,10 +118,10 @@ class _$PriceImpl implements _Price {
 }
 
 abstract class _Price implements Price {
-  const factory _Price({required final String price}) = _$PriceImpl;
+  const factory _Price({required final double price}) = _$PriceImpl;
 
   @override
-  String get price;
+  double get price;
   @override
   @JsonKey(ignore: true)
   _$$PriceImplCopyWith<_$PriceImpl> get copyWith =>

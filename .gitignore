@@ -35,7 +35,8 @@ migrate_working_dir/
 /linux
 /macos
 /windows
-
+.vscode/
+.fvm/
 # Symbolication related
 app.*.symbols
 

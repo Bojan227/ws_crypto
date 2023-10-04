@@ -5,9 +5,9 @@ class WebSocketConnection {
 
   WebSocketConnection({required this.wsUrl});
 
-  late WebSocketChannel channel;
+  late WebSocketChannel? channel;
 
-  WebSocketChannel get currentChannel => channel;
+  WebSocketChannel? get currentChannel => channel;
 
   void createWSChannel(String query) {
     final baseUrl = Uri.parse("$wsUrl$query");
@@ -15,6 +15,8 @@ class WebSocketConnection {
   }
 
   Future<void> closeChannel() async {
-    await channel.sink.close();
+    if (channel != null) {
+      await channel?.sink.close();
+    }
   }
 }

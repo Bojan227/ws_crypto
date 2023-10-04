@@ -6,5 +6,5 @@ part 'price_entity.freezed.dart';
 
 @freezed
 class Price with _$Price {
-  const factory Price({required String price}) = _Price;
+  const factory Price({required double price}) = _Price;
 }
